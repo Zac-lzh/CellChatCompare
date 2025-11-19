@@ -1,17 +1,17 @@
-# CellChatCompare 项目
+# 🔬 CellChatCompare 项目
 
-## 项目介绍
+## 📚 项目介绍
 
 CellChatCompare 是一个用于比较和分析细胞通讯网络的 R 语言工具包，特别关注特定基因表达对细胞间通讯的影响。该工具基于 CellChat 包开发，提供了更丰富的可视化和分析功能。
 
-## 主要功能
+## ✨ 主要功能
 
-- **基因特异性细胞通讯分析**：根据特定基因的表达水平分组，分析不同表达组之间的细胞通讯差异
-- **相关性热图可视化**：使用 qcorrplot 生成美观的细胞通讯相关性热图，支持贝塞尔曲线连接
-- **Mantel 测试**：进行细胞通讯网络的相关性检验
-- **多种可视化类型**：支持层次图、圆形图、热图等多种可视化方式
+- **🔍 基因特异性细胞通讯分析**：根据特定基因的表达水平分组，分析不同表达组之间的细胞通讯差异
+- **📊 相关性热图可视化**：使用 qcorrplot 生成美观的细胞通讯相关性热图，支持贝塞尔曲线连接
+- **🧪 Mantel 测试**：进行细胞通讯网络的相关性检验
+- **🎨 多种可视化类型**：支持层次图、圆形图、热图等多种可视化方式
 
-## 目录结构
+## 📁 目录结构
 
 ```
 CellChatCompare/
@@ -23,7 +23,7 @@ CellChatCompare/
 └── README_中文.md   # 中文说明文档
 ```
 
-## 安装依赖
+## 📦 安装依赖
 
 使用前请确保安装以下 R 包：
 
@@ -33,9 +33,9 @@ install.packages(c("ggplot2", "patchwork", "corrr", "qgraph", "dplyr", "tidyr", 
 remotes::install_github("sqjin/CellChat")
 ```
 
-## 使用示例
+## 🚀 使用示例
 
-### 基因特异性相关性分析
+### 🔬 基因特异性相关性分析
 
 ```r
 # 加载必要的包
@@ -61,7 +61,7 @@ results <- plot_gene_specific_correlation(
 )
 ```
 
-## 核心函数
+## 🎯 核心函数
 
 ### plot_gene_specific_correlation
 
@@ -79,9 +79,9 @@ results <- plot_gene_specific_correlation(
 **返回值**：
 - 包含相关性热图、表达比较图和 Mantel 测试结果的列表
 
-## 输入输出示例
+## 📋 输入输出示例
 
-#### 输入：
+#### 🔄 输入：
 ```r
 # 调用函数示例
 results <- plot_gene_specific_correlation(
@@ -93,7 +93,7 @@ results <- plot_gene_specific_correlation(
 )
 ```
 
-#### 输出：
+#### 📤 输出：
 ```
 # 函数将生成以下文件：
 # 1. output/hoxc4_result/correlation_heatmap.png - 细胞通讯相关性热图
@@ -101,19 +101,19 @@ results <- plot_gene_specific_correlation(
 # 3. output/hoxc4_result/mantel_test_result.txt - Mantel 测试结果
 ```
 
-## 注意事项
+## ⚠️ 注意事项
 
 1. 确保 Seurat 对象中包含目标基因的表达数据
 2. 对于大型数据集，可能需要调整参数以获得更好的可视化效果
 3. 本工具支持不同版本的 Seurat 和 CellChat，但某些功能可能需要根据包版本进行调整
 
-## 许可证
+## 📝 许可证
 
 本项目采用 MIT 许可证。
 
-## 联系方式
+## 📬 联系方式
 
 如有问题或建议，请通过以下方式联系：
 
 - 邮箱：your.email@example.com
-- GitHub：https://github.com/yourusername/CellChatCompare
+- GitHub：https://github.com/Zac-lzh/CellChatCompare
