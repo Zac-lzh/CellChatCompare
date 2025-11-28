@@ -204,13 +204,39 @@ run_cellchat <- function(seurat_obj, celltype_col, species = "mouse",
     cat("✓ Communication probability computed successfully\n")
   }, error = function(e) {
     cat("✗ Error computing communication probability:", e$message, "\n")
+    
+    # Check if the issue is related to cell types
+    if (isS4(cellchat) && "idents" %in% slotNames(cellchat)) {
+      cell_types <- levels(cellchat@idents)
+      cell_counts <- table(cellchat@idents)
+      cat("Cell type counts:", paste(names(cell_counts), cell_counts, sep="=", collapse=", "), "\n")
+      
+      # Check if any cell type has too few cells
+      low_count_types <- names(cell_counts[cell_counts < 2])
+      if (length(low_count_types) > 0) {
+        cat("Warning: The following cell types have fewer than 2 cells, which may cause issues:", paste(low_count_types, collapse=", "), "\n")
+      }
+    }
+    
     # Try with different parameters
     cat("Trying with different parameters...\n")
     tryCatch({
       cellchat <- computeCommunProb(cellchat, type = "triMean")
       cat("✓ Communication probability computed with alternative parameters\n")
     }, error = function(e2) {
-      stop("Failed to compute communication probability: ", e2$message)
+      # Check if data.signaling is empty
+      if (isS4(cellchat) && "data.signaling" %in% slotNames(cellchat) && 
+          (is.null(cellchat@data.signaling) || ncol(cellchat@data.signaling) == 0 || nrow(cellchat@data.signaling) == 0)) {
+        stop(paste("Failed to compute communication probability. Error:", e2$message, 
+                   "\nPossible reasons:",
+                   "\n1. Cell type column '", celltype_col, "' may contain invalid values or too few cells per type",
+                   "\n2. Insufficient signaling genes detected for the given cell types",
+                   "\n3. Try checking and correcting the celltype_col parameter in compare_cellchat() function",
+                   "\n4. Ensure your Seurat object has valid cell type annotations"))
+      } else {
+        stop(paste("Failed to compute communication probability. Error:", e2$message, 
+                   "\nPossible reason: Cell type column '", celltype_col, "' may be incorrect. Please check and correct it."))
+      }
     })
   })
   
