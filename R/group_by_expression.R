@@ -18,9 +18,27 @@ group_by_expression <- function(seurat_obj, target_gene, group_method = "auto",
     stop(paste("Target gene", target_gene, "not found in the Seurat object"))
   }
   
-  # Extract expression values
-  expr_values <- FetchData(seurat_obj, vars = target_gene, assay = assay, slot = slot)
-  expr_values <- expr_values[[target_gene]]
+  # Extract expression values (Seurat 5.0.0 compatible)
+  expr_values <- NULL
+  tryCatch({
+    # Try with layer parameter (Seurat 5.0.0+)
+    expr_values <- FetchData(seurat_obj, vars = target_gene, assay = assay, layer = slot)
+    expr_values <- expr_values[[target_gene]]
+  }, error = function(e) {
+    # Fallback to slot parameter (Seurat 4.x)
+    tryCatch({
+      expr_values <- FetchData(seurat_obj, vars = target_gene, assay = assay, slot = slot)
+      expr_values <- expr_values[[target_gene]]
+    }, error = function(e2) {
+      # Try GetAssayData directly
+      data_mat <- GetAssayData(seurat_obj, assay = assay, slot = slot)
+      expr_values <- data_mat[target_gene, ]
+    })
+  })
+  
+  if (is.null(expr_values)) {
+    stop("Failed to extract expression values for gene ", target_gene)
+  }
   
   # Determine threshold and groups
   if (group_method == "auto") {
