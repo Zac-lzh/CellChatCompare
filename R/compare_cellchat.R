@@ -65,12 +65,28 @@ compare_cellchat <- function(seurat_obj, target_gene, celltype_col,
   # Step 2: Run CellChat analysis on each group
   cat("\n=== Step 2: Running CellChat analysis ===\n")
   cat("Analyzing high expression group...\n")
-  cellchat_high <- run_cellchat(grouped_obj$high_expr, celltype_col, species, 
-                                 min_cells = min_cells_high, max_expr = max_expr, min_pct = min_pct)
+  cellchat_high <- run_cellchat(
+    seurat_obj = grouped_obj$high_expr, 
+    celltype_col = celltype_col, 
+    species = species, 
+    min_cells = min_cells_high, 
+    max_expr = max_expr, 
+    min_pct = min_pct,
+    assay = assay,
+    slot = slot
+  )
   
   cat("Analyzing low expression group...\n")
-  cellchat_low <- run_cellchat(grouped_obj$low_expr, celltype_col, species, 
-                                min_cells = min_cells_low, max_expr = max_expr, min_pct = min_pct)
+  cellchat_low <- run_cellchat(
+    seurat_obj = grouped_obj$low_expr, 
+    celltype_col = celltype_col, 
+    species = species, 
+    min_cells = min_cells_low, 
+    max_expr = max_expr, 
+    min_pct = min_pct,
+    assay = assay,
+    slot = slot
+  )
   
   # Save CellChat objects if requested
   if (save_objects) {
